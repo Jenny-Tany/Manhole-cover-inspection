@@ -8,7 +8,9 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@jamescoyle/vue-icon": "^0.1.2",
     "@mdi/font": "7.0.96",
+    "@mdi/js": "^7.4.47",
     "core-js": "^3.34.0",
     "echarts": "^5.5.0",
     "element-plus": "^2.6.0",

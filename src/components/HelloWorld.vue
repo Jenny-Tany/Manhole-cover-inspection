@@ -20,19 +20,22 @@
         </v-tab>
         <v-tab value="option-2">
           <v-icon start>
-            mdi-lock
+            <svg-icon type="mdi" :path="path"></svg-icon>
+            <!-- mdi-lock -->
           </v-icon>
           上传图片
         </v-tab>
         <v-tab value="option-3">
           <v-icon start>
-            mdi-access-point
+            <svg-icon type="mdi" :path="path1"></svg-icon>
+            <!-- mdi-access-point -->
           </v-icon>
           历史记录
         </v-tab>
         <v-tab value="option-4">
           <v-icon start>
-            mdi-access-point
+            <!-- mdi-access-point -->
+            <svg-icon type="mdi" :path="path2"></svg-icon>
           </v-icon>
           任务日历
         </v-tab>
@@ -62,15 +65,18 @@
   </v-card>
 </template>
 
-<script>
-import test from '@/pages/test.vue'
-import DataQuery from '@/components/DataQuery.vue'
-  export default {
-  components: { test },
-    data: () => ({
-      tab: 'option-1',
-    }),
-  }
+<script setup>
+import test from '@/pages/test.vue';
+import DataQuery from '@/components/DataQuery.vue';
+
+// 引入图标
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiFormatListBulleted, mdiHistory, mdiUpload } from '@mdi/js';
+const path = mdiUpload;
+const path1 = mdiHistory;
+const path2 = mdiFormatListBulleted;
+
+const tab = ref('option-1');
 </script>
 
 <style lang="scss" scoped>

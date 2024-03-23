@@ -14,7 +14,7 @@
           dense
           hide-details
         ></v-select>
-        <v-select
+        <!-- <v-select
           v-model="weekday"
           :items="weekdays"
           class="ma-2"
@@ -22,7 +22,7 @@
           variant="outlined"
           dense
           hide-details
-        ></v-select>
+        ></v-select> -->
       </v-sheet>
       <v-sheet>
         <v-calendar
@@ -98,6 +98,6 @@
   <style lang="scss" scoped>
   .list {
     margin: 5vh;
-    margin-left: 0;
+    margin-left: 2vh;
   }
   </style>
