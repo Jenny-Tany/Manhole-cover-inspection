@@ -161,7 +161,7 @@
 import test from '@/pages/test.vue';
 import DataQuery from '@/components/DataQuery.vue';
 import User from '@/components/User.vue'
-import UpLoadFiles from '@/components/UpLoadFiles.vue'
+// import UpLoadFiles from '@/components/UpLoadFiles.vue'
 
 // 引入图标
 import SvgIcon from '@jamescoyle/vue-icon';
@@ -175,14 +175,8 @@ const tab = ref('option-1');
 // 抽屉式导航
 const drawer = ref(true);
 const rail = ref(true);
-const selectedComponent = ref(User)
-const selectComponent = (value) => {
-  if (value === 'account') {
-    selectedComponent.value = User;
-  } else if (value === 'files') {
-    selectedComponent.value = UpLoadFiles;
-  }
-};
+// const selectedComponent = ref(User)
+
 const mainStyle = ref('148px');
 
 const toggleRail = () => {

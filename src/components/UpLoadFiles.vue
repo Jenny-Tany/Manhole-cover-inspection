@@ -259,6 +259,7 @@ const prevent = (e) => {
     display: flex;
     justify-content: flex-end;
     margin-right: 15px;
+    margin-top: 2vh;
   }
   .photo {
     margin-top: 10vh;

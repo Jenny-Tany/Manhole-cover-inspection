@@ -52,7 +52,7 @@
         value: [new Date()],
         events: [],
         colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-        titles: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
+        titles: ['Meeting', '修井盖', '换井盖', 'Travel', 'Event', 'Birthday', '处理井盖', 'Party'],
       }),
       mounted () {
         const adapter = useDate()

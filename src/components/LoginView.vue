@@ -5,10 +5,33 @@
       <form class="form" id="a-form" @submit.prevent>
         <h2 class="form_title title">创建账号</h2>
         <!-- <span class="form_span">选择注册方式或电子邮箱注册</span> -->
-        <input type="text" class="form_input" placeholder="Name">
-        <input type="text" class="form_input" placeholder="Email">
-        <input type="password" class="form_input" placeholder="Password">
-        <button class="form_button button submit" @click="signup">注册</button>
+        <!-- <input type="text" class="form_input" placeholder="Name"> -->
+        <!-- <input type="text" class="form_input" placeholder="Email"> -->
+        <!-- <input type="password" class="form_input" placeholder="Password"> -->
+    <v-sheet class="mx-auto" width="350">
+    <v-form fast-fail @submit.prevent style="background-color: #ecf0f3">
+      <v-text-field
+        v-model="signupUsername"
+        :rules="firstNameRules"
+        label="用户名"
+        style="border-radius: 8px;"
+      ></v-text-field>
+
+      <v-text-field
+        v-model="signupPassword"
+        :rules="lastNameRules"
+        label="密码"
+        type="password"
+        
+      ></v-text-field>
+
+      <!-- <v-btn class="mt-2 form_button button " type="submit" block @click="signup">注册</v-btn> -->
+      <div class="annui">
+        <el-button class="mt-2 form_button button"  type="submit" :plain="true" @click="signup">注册</el-button>
+      </div>
+    </v-form>
+  </v-sheet>
+        <!-- <button class="form_button button submit" @click="signup">注册</button> -->
       </form>
     </div>
 
@@ -44,8 +67,28 @@
 </template>
 
 <script setup>
-import {ref} from "vue"
+import { reactive, ref} from "vue"
 import { useRouter } from "vue-router";
+import { ElMessage } from 'element-plus'
+
+const firstName = ref('');
+const firstNameRules = [
+  value => {
+    if (value?.length > 3) return true;
+
+    return '用户名必须至少包含3个字符。';
+  },
+];
+
+const lastName = ref('123');
+const lastNameRules = [
+  value => {
+    // if (/[^0-9]/.test(value)) return true;
+    if (value?.length >= 5) return true;
+
+    return '密码必须至少包含5个字符。';
+  },
+];
 
 // 跳转路由
 const router = useRouter();
@@ -61,34 +104,55 @@ const changeStyle = () => {
     // }, 1500)
 }
 
-// 用户名和密码
-const username = ref('')
-const password = ref('')
+		
+// 注册所需的用户名和密码
+const signupUsername = ref('');
+const signupPassword = ref('');
+
+// 登录所需的用户名和密码
+const loginUsername = ref('');
+const loginPassword = ref('');
 
 // 注册
-const signup = () => {
+const signup = async () => {
   console.log("Signing up...");
+  const eUsername = signupUsername.value;
+  const ePassword = signupPassword.value;
 
-  //用户名正则，4到16位（字母，数字，下划线，减号）
-  var uname = prompt("请出入用户名")
-  var userNamePattern = /^[a-zA-Z0-9_-]{4,16}$/;
-  if (userNamePattern.test(uname)) {
-  	console.log("√");
-  }else{
-  	console.log("您的用户名格式有误")
+  try {
+    const response = await fetch('/api/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userName: eUsername, password: ePassword }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      if (data.msg === 'success') {
+        console.log('注册成功');
+        // 弹出消息框
+        ElMessage({
+          message: '恭喜你，注册成功！',
+          type: 'success',
+        })
+        // 可以根据后端返回的数据进行相应的处理
+      } else if(data.msg === '用户已存在')  {
+        console.log('注册失败：用户名已存在或其他错误');
+        ElMessage({
+          message: '注册失败，该用户名已存在',
+          type: 'warning',
+        })
+      }
+    } else {
+      console.error('注册请求失败');
+    }
+  } catch (error) {
+    console.error('注册请求出错：', error);
   }
 
-  //密码正则，至少8-16个字符，至少1个大写字母，1个小写字母和1个数字，其他可以是任意字符
-  var pwd = prompt("请出入密码")
-  var pwdPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\s\S]{8,16}$/ ;
-  if (pwdPattern.test(pwd)) {
-  	console.log("√");
-  }else{
-  	console.log("您的密码格式有误");
-  }
-
-  // 验证邮箱
-  // var reg = /^[a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*\.[a-z]{2,}$/
 };
 
 // 登录
@@ -113,6 +177,15 @@ const login = () => {
   user-select: none;
 }
 
+:deep(.v-input__details) {
+  background-color: rgb(236, 240, 243);
+}
+
+.annui {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 /* body {
   width: 100%;
   height: 100vh;
@@ -264,6 +337,10 @@ const login = () => {
         box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #f9f9f9;
         border: none;
         outline: none;
+    }
+    .button:hover {
+      background-color: #5f75cc;
+      color:white
     }
     .a-container {
         z-index: 100;
