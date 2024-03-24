@@ -39,8 +39,8 @@
       <form class="form" id="b-form" @submit.prevent>
         <h2 class="form_title title">登入账号</h2>
         <!-- <span class="form_span">选择登录方式或电子邮箱登录</span> -->
-        <input type="text" class="form_input" placeholder="Email" v-model="username">
-        <input type="password" class="form_input" placeholder="Password" v-model="password">
+        <input type="text" class="form_input" placeholder="Email" v-model="loginUsername">
+        <input type="password" class="form_input" placeholder="Password" v-model="loginPassword">
         <a class="form_link">忘记密码？</a>
         <button class="form_button button submit" @click="login">登录</button>
       </form>
@@ -67,9 +67,16 @@
 </template>
 
 <script setup>
-import { reactive, ref} from "vue"
+import { onMounted, reactive, ref} from "vue"
 import { useRouter } from "vue-router";
 import { ElMessage } from 'element-plus'
+
+onMounted(() => {
+  signupUsername.value = ''
+  signupPassword.value = ''
+  loginUsername.value = ''
+  loginPassword.value = ''
+})
 
 const firstName = ref('');
 const firstNameRules = [
@@ -153,18 +160,60 @@ const signup = async () => {
     console.error('注册请求出错：', error);
   }
 
+  // 清空输入框
+  signupUsername.value = ''
+  signupPassword.value = ''
 };
 
 // 登录
-const login = () => {
+const login = async () => {
   console.log("Logging in...");
   // 获取用户输入的用户名和密码
-  const eUsername = username.value;
-  const ePassword = password.value;
-  if (eUsername === 'manager' && ePassword == '123456')
-    router.push('/map');
-  else if (eUsername == 'user' && ePassword === '1234')
-    router.push('/');
+  const eUsername = loginUsername.value;
+  const ePassword = loginPassword.value;
+  // if (eUsername === 'manager' && ePassword == '123456')
+  //   router.push('/map');
+  // else if (eUsername == 'user' && ePassword === '1234')
+  //   router.push('/');
+  try {
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userName: eUsername, password: ePassword }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data); // 根据后端返回的数据进行处理
+      // 存储token
+      const token = data.data.token;
+      const status = data.data.status;
+      console.log(data.msg);
+      console.log(token);
+      localStorage.setItem('token', token);
+      ElMessage({
+          message: '登录成功！',
+          type: 'success',
+        })
+        if (status === 'user')
+          router.push('/');
+        else router.push('/map');
+
+    } else if (data.msg === '该用户未注册') {
+      console.error('登录请求失败');
+      ElMessage.error('该用户未注册')
+    }
+  } catch (error) {
+    console.error('登录请求出错：', error);
+    ElMessage.error('该用户未注册')
+    console.log(111);
+  }
+
+  // 清空输入框
+  loginUsername.value = ''
+  loginPassword.value = ''
 };
 </script>
 
