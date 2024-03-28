@@ -51,8 +51,8 @@
         ],
         value: [new Date()],
         events: [],
-        colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-        titles: ['Meeting', '修井盖', '换井盖', 'Travel', 'Event', 'Birthday', '处理井盖', 'Party'],
+        colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'grey darken-1'],
+        titles: ['Meeting', '修井盖', '换井盖', 'Travel', 'Event', '处理井盖'],
       }),
       mounted () {
         const adapter = useDate()

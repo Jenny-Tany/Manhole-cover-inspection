@@ -12,7 +12,7 @@
       <v-spacer></v-spacer>
 
       <!-- 对话框 -->
-      <div class="text-center pa-4">
+  <div class="text-center pa-4">
     <v-dialog
       v-model="dialog"
       max-width="400"
@@ -167,6 +167,7 @@
     const router = useRouter()
     const quit = ()=> {
         dialog.value = false;
+		localStorage.removeItem('token');
         router.push('/login')
     }
 	//此处是field的初始化

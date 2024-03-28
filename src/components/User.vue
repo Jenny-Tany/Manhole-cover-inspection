@@ -2,7 +2,7 @@
     <v-container style="max-width: 500px">
       <v-text-field
         v-model="newTask"
-        label="What are you working on?"
+        label="添加待办任务："
         variant="solo"
         @keydown.enter="create"
       >
@@ -19,7 +19,7 @@
       </v-text-field>
   
       <h2 class="text-h4 text-success ps-4">
-        Tasks:&nbsp;
+        任务总数:&nbsp;
         <v-fade-transition leave-absolute>
           <span :key="`tasks-${tasks.length}`">
             {{ tasks.length }}
@@ -34,13 +34,13 @@
         class="my-1"
       >
         <strong class="mx-4 text-info-darken-2">
-          Remaining: {{ remainingTasks }}
+          未完成: {{ remainingTasks }}
         </strong>
   
         <v-divider vertical></v-divider>
   
         <strong class="mx-4 text-success-darken-2">
-          Completed: {{ completedTasks }}
+          已完成: {{ completedTasks }}
         </strong>
   
         <v-spacer></v-spacer>
@@ -93,11 +93,11 @@
         tasks: [
           {
             done: false,
-            text: 'Foobar',
+            text: '修井盖',
           },
           {
             done: false,
-            text: 'Fizzbuzz',
+            text: '补井盖',
           },
         ],
         newTask: null,

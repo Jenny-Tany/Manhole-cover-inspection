@@ -80,12 +80,17 @@
     </el-select>
     </div>
 
-
     <div class="photo">
+  <div v-for="item in formData.images" :key="item.id">
+    <img :src="item.output_url" alt="Image" style="width: 230px; height: 280px;">
+    <p>{{ item.box_info }}</p>
+  </div>
+</div>
+    <!-- <div class="photo">
     <div v-for="item in formData.images" :key="item.id">
       <img :src="item" alt="Image" style="width: 230px; height: 280px;">
     </div>
-    </div>
+    </div> -->
 
   </div>
 </div>
@@ -147,11 +152,16 @@ const handleSuccess = (response, file) => {
     console.log('File uploaded successfully');  
     console.log('Data returned by the server:', response.data);  
 
-    // 遍历数组，获取每个对象的 output_url
+    // 遍历数组，获取每个对象的 output_url 和 box_info
     response.data.forEach(item => {
       console.log('output_url:', item.output_url);
-      // 如果需要将 output_url 存储到 formData 中，可以在这里进行操作
-      formData.value.images.push(item.output_url);
+      console.log('box_info:', item.box_info);
+
+      // 将 output_url 和 box_info 存储到 formData 中
+      formData.value.images.push({
+        output_url: item.output_url,
+        box_info: item.box_info
+      });
     });
 
   } else {  

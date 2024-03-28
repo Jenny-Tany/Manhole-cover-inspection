@@ -61,6 +61,38 @@
       color="primary"
     >
       <v-toolbar-title>井盖检测</v-toolbar-title>
+            <!-- 对话框 -->
+            <div class="text-center pa-4">
+    <v-dialog
+      v-model="dialog"
+      max-width="400"
+      persistent
+    >
+      <template v-slot:activator="{ props: activatorProps }">
+        <v-btn icon  v-bind="activatorProps">
+        <v-icon>mdi-export</v-icon>
+      </v-btn>
+      </template>
+
+      <v-card
+      color="#3268a6"
+        prepend-icon="mdi-export"
+        title="确定要退出该账号吗?"
+      >
+        <template v-slot:actions>
+          <v-spacer></v-spacer>
+
+          <v-btn @click="dialog = false" style="background-color: #375891;">
+            取消
+          </v-btn>
+
+          <v-btn @click="quit" style="background-color: #a25555;">
+            确定
+          </v-btn>
+        </template>
+      </v-card>
+    </v-dialog>
+  </div>
     </v-toolbar>
     <v-layout>
       
@@ -127,7 +159,6 @@
           任务日历
         </v-tab>
       </v-tabs>
-
     </div>
       </v-navigation-drawer>
       <v-main :style="{ '--v-layout-left': mainStyle }">
@@ -162,6 +193,18 @@ import test from '@/pages/test.vue';
 import DataQuery from '@/components/DataQuery.vue';
 import User from '@/components/User.vue'
 // import UpLoadFiles from '@/components/UpLoadFiles.vue'
+
+import {useRouter} from "vue-router"
+
+// 对话框
+const dialog = ref(false)
+// 退出登录
+const router = useRouter()
+const quit = ()=> {
+    dialog.value = false;
+    localStorage.removeItem('token');
+    router.push('/login')
+}
 
 // 引入图标
 import SvgIcon from '@jamescoyle/vue-icon';
