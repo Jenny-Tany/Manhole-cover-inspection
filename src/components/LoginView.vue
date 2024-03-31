@@ -207,7 +207,7 @@ const login = async () => {
     }
   } catch (error) {
     console.error('登录请求出错：', error);
-    ElMessage.error('该用户未注册')
+    ElMessage.error('登录请求出错：')
     console.log(111);
   }
 
