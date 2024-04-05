@@ -10,6 +10,7 @@ import index from '@/pages/index.vue'
 import HelloWorld from '@/components/HelloWorld.vue'
 import LoginView from '@/components/LoginView.vue'
 import Map from '@/components/Map.vue'
+import SpecificMap from '@/components/SpecificMap.vue'
 import test from '@/pages/test.vue'
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
@@ -30,6 +31,11 @@ const router = createRouter({
       name: 'map',
       component: Map,
       meta: { requiresAuth: true } // 添加一个meta字段表示需要登录才能访问
+    },
+    {
+      path: '/map2',
+      name: 'map2',
+      component: SpecificMap,
     }
   ]
 });

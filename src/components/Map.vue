@@ -146,7 +146,7 @@
 				</div>
 			</div>
 			<!-- 地图展示区域 -->
-			<div
+			<div ref="map"
 				class="map"
 				id="map">
 				<!-- 地图 -->
@@ -170,6 +170,8 @@
 		localStorage.removeItem('token');
         router.push('/login')
     }
+
+	const mapRef = ref(null);
 	//此处是field的初始化
 	onMounted(() => {
 		let fieldChart = echarts.init(document.getElementById("field"));
@@ -1177,8 +1179,24 @@
 			},
 			series: series,
 		};
+		
+		// 点击某个省份跳转
+		mapChart.on('click', function(params) {
+		    console.log('点击了：' + params.name);
+		    // console.log('经度：' + params.data.coord[0]);
+		    // console.log('纬度：' + params.data.coord[1]);
+
+    		// 传递参数到下一个路由
+    		router.push({ 
+    		    path: '/map2', 
+    		    query: { 
+    		        name: params.name
+    		    } 
+    		});
+		});
 		mapChart.setOption(option);
 	});
+
 </script>
 
 <style lang="scss" scoped>

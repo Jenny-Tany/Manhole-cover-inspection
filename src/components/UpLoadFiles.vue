@@ -58,23 +58,54 @@
     </div>
     
 
-    <div class="photo">
+  <div class="photo">
   <div v-for="item in formData.images" :key="item.id">
     <img :src="item.output_url" alt="Image" style="width: 230px; height: 280px;">
     <p>检测类型：{{ item.box_info }}</p>
   </div>
-  <div class="text-center">
+  <!-- <div class="photo">
+      <v-container>
+    <v-row>
+      <v-col v-for="item in formData.images" :key="item.id">
+        <v-card class="mx-auto" max-width="400">
+          <v-img class="align-end text-white" height="300" :src="item.output_url" cover>
+            <v-card-title></v-card-title>
+          </v-img>
+
+          <v-card-subtitle class="pt-4">
+            111
+          </v-card-subtitle>
+
+          <v-card-text>
+            <div>检测类型：{{ item.box_info }}</div>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-btn color="orange">
+              Share
+            </v-btn>
+
+            <v-btn color="orange">
+              Explore
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+
+
+</div> -->
+<div class="text-center">
     <v-pagination
       v-model="page"
       :length="4"
       :total-visible="4"
     ></v-pagination>
+</div>
   </div>
 </div>
-
-  </div>
 </div>
-
   
 </template>
 
@@ -182,7 +213,7 @@ const prevent = (e) => {
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
     }
   }
   .select {
@@ -191,10 +222,15 @@ const prevent = (e) => {
     margin-right: 15px;
     margin-top: 2vh;
   }
+		
   .photo {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.photo div {
+  flex: 0 0 calc(25% - 20px); /* 让每个图片元素占据三分之一的宽度，减去间距 */
+  margin-bottom: 20px; /* 设置图片元素之间的间距 */
+}
 </style>

@@ -8,6 +8,7 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "@jamescoyle/vue-icon": "^0.1.2",
     "@mdi/font": "7.0.96",
     "@mdi/js": "^7.4.47",
