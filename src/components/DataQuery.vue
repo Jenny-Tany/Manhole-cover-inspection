@@ -3,8 +3,8 @@
       <v-container>
     <v-row>
       <v-col v-for="photo in photos" :key="photo.id">
-        <v-card class="mx-auto" max-width="400">
-          <v-img class="align-end text-white" height="300" :src="photo.resultUrl" cover>
+        <v-card class="mx-auto" max-width="380">
+          <v-img class="align-end text-white" height="280" :src="photo.resultUrl" cover>
             <v-card-title>{{ photo.uploadTime }}</v-card-title>
           </v-img>
 
@@ -29,21 +29,38 @@
       </v-col>
     </v-row>
   </v-container>
+
+  <!-- 分页 -->
+<div class="text-center">
+    <v-pagination
+      v-model="page"
+      :length="4"
+      :total-visible="4"
+    ></v-pagination>
+</div>
     </div>
 
 </template>
 
 <script setup>
-import {ref, onMounted} from 'vue'
+import { ref, onMounted, watch } from 'vue'
 
+const page = ref(1)
 const photos = ref([]);
 
 onMounted(() => {
-    const page_num = 4; // 页码
-    const pageSize = 3; // 每页的记录数
+    fetchData(page.value);
+});
+
+watch(page, (newPage) => {
+    fetchData(newPage);
+});
+
+function fetchData(pageNum) {
+    const pageSize = 6; // 每页的记录数
     const token = localStorage.getItem('token'); // 从 localStorage 中获取 token
 
-    fetch(`/api/photos?page_num=${page_num}&pageSize=${pageSize}`, {
+    fetch(`/api/photos?page_num=${pageNum}&pageSize=${pageSize}`, {
         headers: {
             'token': token
         }
@@ -57,16 +74,11 @@ onMounted(() => {
         .then(data => {
             console.log(data); // 处理后端返回的数据
             photos.value = data.data.rows;
-            console.log(photos.value);
-            // data.data.rows.forEach(item => {
-            //   photos.value.push(item)
-            //   // console.log(photos[0]);
-            // });
         })
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
         });
-});
+}
 		
 // SELECT dept_name, employee_id, max_salary
 // FROM (
@@ -84,10 +96,16 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .contain {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     margin-top: 4vh;
     margin-bottom: 1px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+:deep(.v-col) {
+    flex: 0 0 calc(33.33% - 1rem) !important;
+    margin-bottom: 1rem;
 }
 </style>
