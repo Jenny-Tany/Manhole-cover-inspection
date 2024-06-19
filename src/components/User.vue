@@ -94,7 +94,9 @@
     </div>
 
     <!-- 地图 -->
-    <div v-show="showOverall" id="map"></div>
+    <div class="route">
+      <div id="map"></div>
+    </div>
 
     <!-- 自定义任务 -->
     <v-container style="max-width: 500px; margin-top: 40px">
@@ -151,9 +153,9 @@
       <v-card v-if="tasks.length > 0">
         <v-slide-y-transition class="py-0" tag="v-list" group>
           <template v-for="(task, i) in tasks" :key="`${i}-${task.text}`">
-            <v-divider v-if="i!== 0" :key="`${i}-divider`"></v-divider>
+            <v-divider v-if="i !== 0" :key="`${i}-divider`"></v-divider>
 
-            <v-list-item @click="task.done =!task.done">
+            <v-list-item @click="task.done = !task.done">
               <template v-slot:prepend>
                 <v-checkbox-btn
                   v-model="task.done"
@@ -162,7 +164,7 @@
               </template>
 
               <v-list-item-title>
-                <span :class="task.done? 'text-grey' : 'text-primary'">{{
+                <span :class="task.done ? 'text-grey' : 'text-primary'">{{
                   task.text
                 }}</span>
               </v-list-item-title>
@@ -196,16 +198,16 @@ const acceptTask = (id) => {
       token: token,
     },
   })
-  .then((response) => {
+    .then((response) => {
       if (response.ok) {
         return response.json();
       }
       throw new Error("Network response was not ok.");
     })
-  .then((data) => {
+    .then((data) => {
       console.log(data); // 处理后端返回的数据
     })
-  .catch((error) => {
+    .catch((error) => {
       console.error(
         "There has been a problem with your fetch operation:",
         error
@@ -229,18 +231,18 @@ const getTasks = () => {
       token: token,
     },
   })
-  .then((response) => {
+    .then((response) => {
       if (response.ok) {
         return response.json();
       }
       throw new Error("Network response was not ok.");
     })
-  .then((data) => {
+    .then((data) => {
       data.data.forEach((element) => {
         missions.push(element);
       });
     })
-  .catch((error) => {
+    .catch((error) => {
       console.error();
     });
   console.log(missions);
@@ -262,33 +264,45 @@ const latitude = ref(null);
 
 // 去往目的地
 const goToDes = (destinationLatitude, destinationLongitude) => {
+  window._AMapSecurityConfig = {
+    securityJsCode: "f715472cbaeee315a3ab0db513cebefa",
+  };
   AMapLoader.load({
     key: "829635121fbade2893b65c9b39f5b3af",
     version: "2.0",
   }).then((AMap) => {
-    // 构造路线导航类
-    const driving = new AMap.Driving({
-      map: null, 
-      panel: "panel"
+    const map = new AMap.Map("map", {
+      zoom: 14,
+      center: [destinationLongitude, destinationLatitude],
     });
 
-    // 规划路线
-    driving.search([
-      {
-        location: [latitude.value, longitude.value]
-      },
-      {
-        location: [destinationLatitude, destinationLongitude]
-      }
-    ], (status, result) => {
-      if (status === 'complete') {
-        console.log('绘制驾车路线完成');
-      } else {
-        console.error('获取驾车数据失败:' + result);
-      }
+    const startLngLat = [
+      parseFloat(longitude.value),
+      parseFloat(latitude.value),
+    ];
+    const endLngLat = [
+      parseFloat(destinationLongitude),
+      parseFloat(destinationLatitude),
+    ];
+    console.log(startLngLat);
+    console.log(endLngLat);
+
+    AMap.plugin(["AMap.Driving"], () => {
+      const driving = new AMap.Driving({
+        map: map,
+        // panel: "panel",
+      });
+
+      driving.search(startLngLat, endLngLat, (status, result) => {
+        if (status === "complete") {
+          console.log("绘制驾车路线完成");
+        } else {
+          console.error("获取驾车数据失败:" + result);
+        }
+      });
     });
   });
-}
+};
 
 onMounted(() => {
   // 检查定位
@@ -300,14 +314,14 @@ onMounted(() => {
     key: "829635121fbade2893b65c9b39f5b3af",
     version: "2.0",
   })
-  .then((AMap) => {
+    .then((AMap) => {
       AMap.plugin("AMap.Geolocation", function () {
         var geolocation = new AMap.Geolocation({
-          enableHighAccuracy: true, 
-          timeout: 10000, 
-          offset: [10, 20], 
-          zoomToAccuracy: true, 
-          position: "RB" 
+          enableHighAccuracy: true,
+          timeout: 10000,
+          offset: [10, 20],
+          zoomToAccuracy: true,
+          position: "RB",
         });
 
         geolocation.getCurrentPosition(function (status, result) {
@@ -340,7 +354,7 @@ onMounted(() => {
         }
       });
     })
-  .catch((e) => {
+    .catch((e) => {
       console.error(e);
     });
 
@@ -531,5 +545,14 @@ const getPosition = () => {
 .near {
   margin-top: 40px;
   margin-left: 20px;
+}
+#map {
+  width: 1100px;
+  height: 600px;
+  margin-top: 20px;
+  margin-left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
