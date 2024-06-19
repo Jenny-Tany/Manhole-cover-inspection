@@ -514,7 +514,7 @@ onMounted(() => {
   .column1 {
       width: 350px;
       background-color: rgb(14, 33, 71);
-      height: 100vh;
+      min-height: 100vh;
       height: 850px;
       display: flex;
       justify-content: space-between;
@@ -527,7 +527,7 @@ onMounted(() => {
   .column3 {
       width: 500px;
       background-color: rgb(14, 33, 71);
-      height: 100vh;
+      min-height: 100vh;
       height: 850px;
       display: flex;
       justify-content: space-between;

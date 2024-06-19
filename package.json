@@ -14,7 +14,7 @@
     "@mdi/js": "^7.4.47",
     "core-js": "^3.34.0",
     "echarts": "^5.5.0",
-    "element-plus": "^2.6.0",
+    "element-plus": "^2.7.5",
     "roboto-fontface": "*",
     "vue": "^3.3.0",
     "vuetify": "^3.0.0"

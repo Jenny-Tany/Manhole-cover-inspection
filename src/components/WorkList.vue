@@ -1,6 +1,6 @@
 <template>
     <div class="list">
-      <v-sheet
+      <!-- <v-sheet
         class="d-flex"
         height="54"
         tile
@@ -14,7 +14,7 @@
           dense
           hide-details
         ></v-select>
-        <!-- <v-select
+        <v-select
           v-model="weekday"
           :items="weekdays"
           class="ma-2"
@@ -22,8 +22,8 @@
           variant="outlined"
           dense
           hide-details
-        ></v-select> -->
-      </v-sheet>
+        ></v-select>
+      </v-sheet> -->
       <v-sheet>
         <v-calendar
           ref="calendar"
@@ -52,7 +52,7 @@
         value: [new Date()],
         events: [],
         colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'grey darken-1'],
-        titles: ['Meeting', '修井盖', '换井盖', 'Travel', 'Event', '处理井盖'],
+        titles: ['更换井盖', '修复井盖', '补充缺失井盖', '调整倾斜井盖', '处理井盖'],
       }),
       mounted () {
         const adapter = useDate()
@@ -97,7 +97,7 @@
 
   <style lang="scss" scoped>
   .list {
-    margin: 5vh;
-    margin-left: 2vh;
+    margin: 1vh;
+    margin-right: 2vh;
   }
   </style>

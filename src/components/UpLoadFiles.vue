@@ -1,9 +1,9 @@
 <template>
-<div class="contain">
+<div class="files">
   <div class="title">
   <span>上传井盖图片进行检测</span>
 </div>
-<v-divider></v-divider>
+<v-divider style="margin-top: 8px;"></v-divider>
 
 <div class="form">
   <el-form
@@ -33,7 +33,7 @@
 
   <!-- 返回的图片 -->
   <div class="show">
-    <div class="select">
+    <!-- <div class="select">
       <el-select
       v-model="value"
       placeholder="选择类型"
@@ -47,16 +47,38 @@
         :value="item.value"
       />
     </el-select>
-    </div>
+    </div> -->
     
+    <v-container>
+    <v-row>
+      <v-col v-for="photo in formData.images" :key="photo.id">
+        <v-card class="mx-auto" max-width="380" height="350px">
+          <v-img class="align-end text-white" height="250" :src="photo.output_url" cover>
+            <v-card-title>{{ photo.uploadTime }}</v-card-title>
+          </v-img>
 
-  <div class="photo">
-  <div class="each" v-for="item in formData.images" :key="item.id">
-    <img :src="item.output_url" alt="Image" style="width: 230px; height: 280px;">
-    <p>检测类型：{{ item.box_info }}</p>
-  </div>
+          <!-- <v-card-subtitle class="pt-4">
+            上传时间：{{ photo.uploadTime }}
+          </v-card-subtitle> -->
 
-  </div>
+          <v-card-text>
+            <div>损坏类型：{{ photo.box_info }}</div>
+            <div>井盖位置：{{ photo.location }}</div>
+          </v-card-text>
+
+          <!-- <v-card-actions>
+            <v-btn color="orange">
+              Share
+            </v-btn>
+
+            <v-btn color="orange">
+              Explore
+            </v-btn>
+          </v-card-actions> -->
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </div>
 </div>
   
@@ -106,13 +128,15 @@ const handleSuccess = (response, file) => {
 
     // 遍历数组，获取每个对象的 output_url 和 box_info
     response.data.forEach(item => {
+      console.log(item);
       console.log('output_url:', item.output_url);
       console.log('box_info:', item.box_info);
 
       // 将 output_url 和 box_info 存储到 formData 中
       formData.value.images.push({
         output_url: item.output_url,
-        box_info: item.box_info
+        box_info: item.box_info,
+        location: item.location
       });
     });
 
@@ -130,6 +154,7 @@ const prevent = (e) => {
 <style lang="scss" scoped>
 .contain {
   position: relative;
+  margin-top: 20px;
 }
   button {
     background-color: #4765b8;
@@ -150,7 +175,7 @@ const prevent = (e) => {
     font-size: 25px;
     color: #285193;
     padding: 8px 0;
-    margin-top: 2vh;;
+    margin-top: 3px;;
 
     span {
       background-color: #e5e8f2;
@@ -162,6 +187,7 @@ const prevent = (e) => {
       justify-content: center;
       align-items: center;
       flex-wrap: nowrap;
+      min-height: 100vh;
     }
   }
   .select {
@@ -170,18 +196,17 @@ const prevent = (e) => {
     margin-right: 15px;
     margin-top: 2vh;
   }
-		
-  .photo {
-  margin-top: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+.files {
+  min-height: 100vh;
 }
-.photo div {
-  flex: 0 0 calc(25% - 20px); /* 让每个图片元素占据三分之一的宽度，减去间距 */
-  margin-bottom: 20px; /* 设置图片元素之间的间距 */
+:deep(.v-col) {
+    flex: 0 0 calc(25% - 1rem) !important;
+    margin-bottom: 1rem;
 }
-// .photo .each {
-  
-// }
+@media (max-width: 768px) {
+  :deep(.v-col) {
+    flex: 0 0 calc(50%) !important; /* 在小于768px时，一行展示两张图片 */
+  }
+}
+
 </style>

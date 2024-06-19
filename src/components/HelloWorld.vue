@@ -158,13 +158,24 @@
           </v-icon>
           任务日历
         </v-tab>
+        <v-tab value="option-5">
+          <v-icon start>
+            <!-- mdi-access-point -->
+            <svg-icon type="mdi" :path="path2"></svg-icon>
+          </v-icon>
+          查看井盖
+        </v-tab>
       </v-tabs>
     </div>
       </v-navigation-drawer>
       <v-main :style="{ '--v-layout-left': mainStyle }">
+
+        
         <v-window v-model="tab">
         <v-window-item value="option-1">
-          <User />
+          <div class="contain">
+            <User />
+          </div>
         </v-window-item>
         <v-window-item value="option-2">
           <UpLoadFiles />
@@ -179,8 +190,9 @@
         </v-window-item>
         <v-window-item value="option-4">
           <WorkList />
-          <!-- <test /> -->
-          <!-- <Map /> -->
+        </v-window-item>
+        <v-window-item value="option-5">
+          <CheckLoc />
         </v-window-item>
       </v-window>
       </v-main>
@@ -193,8 +205,18 @@ import test from '@/pages/test.vue';
 import DataQuery from '@/components/DataQuery.vue';
 import User from '@/components/User.vue'
 // import UpLoadFiles from '@/components/UpLoadFiles.vue'
-
+import { onMounted, ref } from 'vue';
 import {useRouter} from "vue-router"
+
+const screenWidth = ref(window.innerWidth);
+onMounted(() => {
+  window.addEventListener('resize', () => {
+    screenWidth.value = window.innerWidth;
+    if (screenWidth.value < 600) {
+      router.push('/test'); // 在小于600时跳转到另一个页面
+    }
+  });
+});
 
 // 对话框
 const dialog = ref(false)
@@ -240,11 +262,9 @@ const toggleRail1 = () => {
     margin: 10vh;
     margin-bottom: 5vh;
   }
-  // :deep(.v-slide-group__container) {
-  //   padding-right: 15px;
-  //   border-right: 1px solid rgb(161, 161, 161) ;
-
-  // }
+  .contain {
+    min-height: 100vh;
+  }
   .v-window {
     margin: 0 0 5vh 3vh;
   }

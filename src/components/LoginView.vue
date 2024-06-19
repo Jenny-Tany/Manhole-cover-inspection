@@ -22,8 +22,14 @@
         :rules="lastNameRules"
         label="密码"
         type="password"
-        
       ></v-text-field>
+
+      <div class="mb-2 flex items-center text-sm">
+    <el-radio-group v-model="radio1" class="ml-4">
+      <el-radio value="1" size="large">求职者</el-radio>
+      <el-radio value="2" size="large">公司 HR</el-radio>
+    </el-radio-group>
+  </div>
 
       <!-- <v-btn class="mt-2 form_button button " type="submit" block @click="signup">注册</v-btn> -->
       <div class="annui">
@@ -71,6 +77,7 @@ import { onMounted, reactive, ref} from "vue"
 import { useRouter } from "vue-router";
 import { ElMessage } from 'element-plus'
 
+const radio1 = ref('1')
 onMounted(() => {
   signupUsername.value = ''
   signupPassword.value = ''
@@ -248,7 +255,7 @@ const login = async () => {
 .login {
     width: 100%;
     /* margin: -20px; */
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;

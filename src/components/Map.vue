@@ -116,6 +116,7 @@
 				style="
 					display: flex;
 					flex-direction: row;
+					justify-content: center;
 					margin-top: 10px;
 					margin-bottom: 10px;
 				">
@@ -180,7 +181,7 @@
 		// 绘制图表
 		let option = {
 			title: {
-				text: "井盖信息",
+				text: "井盖",
 				textStyle: {
 					color: "white",
 					fontSize: 16, // 设置标题文本字号
@@ -197,7 +198,7 @@
 				},
 			},
 			xAxis: {
-				data: ["金融行业", "IT行业", "教育行业", "医疗行业", "其他行业"],
+				data: ["broke", "cicle", "broke", "good", "uncovered"],
 				axisLabel: {
 					textStyle: {
 						color: "white", // 修改x轴刻度文字颜色为白色
@@ -214,7 +215,7 @@
 			//系列列表,每个系列通过type决定自己的图表类型
 			series: [
 				{
-					name: "2019年",
+					name: "2021年",
 					type: "bar",
 					data: [100, 200, 360, 620, 840],
 					itemStyle: {
@@ -227,7 +228,7 @@
 					},
 				},
 				{
-					name: "2020年",
+					name: "2022年",
 					type: "bar",
 					data: [100, 200, 360, 420, 800],
 					emphasis: {
@@ -237,7 +238,7 @@
 					},
 				},
 				{
-					name: "2021年",
+					name: "2023年",
 					type: "bar",
 					data: [100, 200, 360, 420, 900],
 					emphasis: {
@@ -251,13 +252,13 @@
 			legend: {
 				data: [
 					{
-						name: "2019年",
-					},
-					{
-						name: "2020年",
-					},
-					{
 						name: "2021年",
+					},
+					{
+						name: "2022年",
+					},
+					{
+						name: "2023年",
 					},
 				],
 				textStyle: {
@@ -316,7 +317,7 @@
 			},
 			series: [
 				{
-					name: "2020年",
+					name: "2022年",
 					data: [
 						820, 932, 901, 934, 1290, 1330, 1320, 932, 901, 934, 1290, 1330,
 					],
@@ -325,7 +326,7 @@
 				},
 				//再来一个,数据都翻倍
 				{
-					name: "2021年",
+					name: "2023年",
 					data: [
 						1640, 1864, 1802, 1868, 2580, 2660, 2640, 1864, 1802, 1868, 2580,
 						2660,
@@ -337,10 +338,10 @@
 			legend: {
 				data: [
 					{
-						name: "2020年",
+						name: "2022年",
 					},
 					{
-						name: "2021年",
+						name: "2023年",
 					},
 				],
 				textStyle: {
@@ -356,7 +357,7 @@
 		// 绘制图表
 		let option = {
 			title: {
-				text: "年龄分布",
+				text: "井盖隐患分布",
 				left: "center",
 				textStyle: {
 					color: "white",
@@ -373,19 +374,19 @@
 				bottom: "bottom",
 				data: [
 					{
-						name: "21岁",
+						name: "缺失",
 					},
 					{
-						name: "22岁",
+						name: "完好",
 					},
 					{
-						name: "23岁",
+						name: "破损",
 					},
 					{
-						name: "24岁",
+						name: "circle",
 					},
 					{
-						name: "25岁",
+						name: "未盖",
 					},
 				],
 				textStyle: {
@@ -398,11 +399,11 @@
 					type: "pie",
 					radius: "50%",
 					data: [
-						{ value: 1048, name: "21岁" },
-						{ value: 735, name: "22岁" },
-						{ value: 580, name: "23岁" },
-						{ value: 484, name: "24岁" },
-						{ value: 300, name: "25岁" },
+						{ value: 1048, name: "缺失" },
+						{ value: 735, name: "完好" },
+						{ value: 580, name: "破损" },
+						{ value: 484, name: "circle" },
+						{ value: 300, name: "未盖" },
 					],
 					emphasis: {
 						itemStyle: {
@@ -418,7 +419,7 @@
 	});
 	//此处是profession的初始化
 	onMounted(() => {
-		//计算机科学,会计教育,软件工程,旅游管理,
+		//破损,会计教育,软件工程,旅游管理,
 		let professionChart = echarts.init(document.getElementById("profession"));
 		const myColor = [
 			"#eb2100",
@@ -433,13 +434,13 @@
 			"#33FFCC",
 		];
 		const Ydata = [
-			"工商管理",
-			"旅游管理",
-			"软件工程",
-			"会计教育",
-			"计算机科学",
+			"井圈",
+			"缺失",
+			"完好",
+			"未盖",
+			"破损",
 		];
-		const Xdata = [69, 89, 78, 91, 93];
+		const Xdata = [69, 39, 28, 51, 43];
 		let option = {
 			//你的代码
 			backgroundColor: "#0e2147",
@@ -486,7 +487,7 @@
 							fontSize: "16",
 						},
 					},
-					data: ["702", "350", "610", "793", "664"],
+					data: ["702", "350", "610", "793", "66"],
 				},
 				{
 					name: "滚动TOP 10",
@@ -621,7 +622,7 @@
 		let option = {
 			backgroundColor: "#0f375f",
 			title: {
-				text: "薪酬分布",
+				text: "井盖分布",
 				left: "center",
 				textStyle: {
 					color: "white",
@@ -1199,6 +1200,7 @@
 
 </script>
 
+
 <style lang="scss" scoped>
 .body {
 	margin: 0;
@@ -1263,3 +1265,9 @@
 }
 
 </style>
+SELECT d.dept_name, de.employee_id, MAX(s.salary) as max_salary
+FROM department_employee de
+JOIN department d ON de.department_id = d.id
+JOIN salary_table s ON de.employee_id = s.employee_id
+WHERE de.to_date > sysdate
+GROUP BY d.dept_name, de.employee_id;

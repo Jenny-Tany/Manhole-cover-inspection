@@ -36,7 +36,12 @@ const router = createRouter({
       path: '/map2',
       name: 'map2',
       component: SpecificMap,
-    }
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: test,
+    },
   ]
 });
 
