@@ -69,11 +69,11 @@ export default defineConfig({
     ],
   },
   server: {
-    port: 3000,
+    port: 8080,
     // host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'http://10.34.75.155:8080',
+        target: 'http://10.33.97.71:8080',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },

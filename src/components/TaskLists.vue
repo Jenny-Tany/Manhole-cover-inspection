@@ -1,86 +1,67 @@
 <template>
   <div class="contain">
-    <!-- 自定义任务 -->
-    <v-container style="max-width: 500px; margin-top: 40px">
-      <v-text-field
-        v-model="newTask"
-        label="添加待办任务："
-        variant="solo"
-        @keydown.enter="create"
-      >
-        <template v-slot:append-inner>
-          <v-fade-transition>
-            <v-btn
-              v-show="newTask"
-              icon="mdi-plus-circle"
-              variant="text"
-              @click="create"
-            ></v-btn>
-          </v-fade-transition>
-        </template>
-      </v-text-field>
-
-      <h2 class="text-h4 text-success ps-4">
-        任务总数:&nbsp;
-        <v-fade-transition leave-absolute>
-          <span :key="`tasks-${tasks.length}`">
-            {{ tasks.length }}
-          </span>
-        </v-fade-transition>
-      </h2>
-
-      <v-divider class="mt-4"></v-divider>
-
-      <v-row align="center" class="my-1">
-        <strong class="mx-4 text-info-darken-2">
-          未完成: {{ remainingTasks }}
-        </strong>
-
-        <v-divider vertical></v-divider>
-
-        <strong class="mx-4 text-success-darken-2">
-          已完成: {{ completedTasks }}
-        </strong>
-
-        <v-spacer></v-spacer>
-
-        <v-progress-circular
-          v-model="progress"
-          class="me-2"
-        ></v-progress-circular>
-      </v-row>
-
-      <v-divider class="mb-4"></v-divider>
-
-      <v-card v-if="tasks.length > 0">
-        <v-slide-y-transition class="py-0" tag="v-list" group>
-          <template v-for="(task, i) in tasks" :key="`${i}-${task.text}`">
-            <v-divider v-if="i !== 0" :key="`${i}-divider`"></v-divider>
-
-            <v-list-item @click="task.done = !task.done">
-              <template v-slot:prepend>
-                <v-checkbox-btn
-                  v-model="task.done"
-                  color="grey"
-                ></v-checkbox-btn>
+    <!-- 查看任务清单 -->
+    <div class="tasks">
+      <v-btn variant="outlined" @click="getTasks"> 点击查看任务清单 </v-btn>
+      <!-- <v-data-table :missions="missions"></v-data-table> -->
+      <div class="form">
+        <div class="detail">
+          <!-- <el-button @click="resetDateFilter">Reset Date Filter</el-button>
+      <el-button @click="clearFilter">Reset All Filters</el-button> -->
+          <el-table ref="tableRef" :data="missions">
+            <el-table-column prop="id" label="井盖序号" width="60" />
+            <!-- <el-table-column prop="latitude" label="纬度" /> -->
+            <!-- <el-table-column prop="longitude" label="经度" /> -->
+            <el-table-column prop="address" label="具体地址" />
+            <!-- <el-table-column prop="form" label="类型" /> -->
+            <!-- <el-table-column prop="status" label="井盖状态" /> -->
+            <el-table-column prop="distance" label="去往目的地">
+              <template #default="scope">
+                <v-col cols="auto">
+                  <v-btn
+                    @click="goToDes(scope.row.latitude, scope.row.longitude)"
+                    density="default"
+                    icon="mdi-open-in-new"
+                  ></v-btn>
+                </v-col>
               </template>
+            </el-table-column>
+            <el-table-column prop="finish" label="完成情况" width="135">
+              <template #default="scope">
+                <div class="text-center pa-4">
+                  <v-dialog v-model="dialog" max-width="380" persistent>
+                    <template v-slot:activator="{ props: activatorProps }">
+                      <v-btn @click="dialog = true" v-bind="activatorProps">
+                        上报完成
+                      </v-btn>
+                    </template>
 
-              <v-list-item-title>
-                <span :class="task.done ? 'text-grey' : 'text-primary'">{{
-                  task.text
-                }}</span>
-              </v-list-item-title>
-
-              <template v-slot:append>
-                <v-expand-x-transition>
-                  <v-icon v-if="task.done" color="success"> mdi-check </v-icon>
-                </v-expand-x-transition>
+                    <v-card
+                      prepend-icon="mdi-map-marker"
+                      text="是否已经完成此任务"
+                      title="任务"
+                    >
+                      <template v-slot:actions>
+                        <v-spacer></v-spacer>
+                        <v-btn @click="dialog = false"> 取消 </v-btn>
+                        <v-btn @click="handleFinish(scope.row.id)">
+                          是的
+                        </v-btn>
+                      </template>
+                    </v-card>
+                  </v-dialog>
+                </div>
               </template>
-            </v-list-item>
-          </template>
-        </v-slide-y-transition>
-      </v-card>
-    </v-container>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 地图 -->
+    <div v-show="mapShow" class="route">
+      <div id="map"></div>
+    </div>
   </div>
 </template>
 
@@ -111,10 +92,6 @@ const handleConfirm = (id) => {
     })
     .then((data) => {
       console.log(data); // 处理后端返回的数据
-      ElMessage({
-        message: "完成任务成功",
-        type: "success",
-      });
     })
     .catch((error) => {
       console.error(
@@ -140,6 +117,10 @@ const handleFinish = (id) => {
     })
     .then((data) => {
       console.log(data); // 处理后端返回的数据
+      ElMessage({
+        message: "完成任务成功",
+        type: "success",
+      });
     });
 };
 
@@ -170,17 +151,6 @@ const getTasks = () => {
     });
   console.log(missions);
 };
-
-const tasks = reactive([
-  {
-    done: false,
-    text: "上午更换井盖",
-  },
-  {
-    done: false,
-    text: "下午修复井盖",
-  },
-]);
 
 const longitude = ref(null);
 const latitude = ref(null);
@@ -319,12 +289,12 @@ const adaptedMissionData = computed(() => {
     id: item.id,
     status: item.status,
     distance: parseFloat(item.distance).toFixed(3),
-    address: item.address,
+    address: item.address.slice(0, item.address.length - 26),
   }));
 });
 
 const formatter = (row, column) => {
-  return row.address;
+  return row.address.slice(0, row.address.length - 26);
 };
 const missionData = ref([]);
 
@@ -356,7 +326,7 @@ const getPosition = () => {
           longitude: item.longitude,
           status: item.status,
           distance: item.distance,
-          address: item.address,
+          address: item.address.slice(0, item.address.length - 26),
         });
         // item.status = '进行中';
         // missionData.value = data.data;
@@ -366,27 +336,6 @@ const getPosition = () => {
     })
     .catch((error) => console.error("获取数据出错:", error));
 };
-
-// 借助高德地图 API 将经纬度转换为地理位置
-// function getLocation(latitude, longitude) {
-//   AMapLoader.load({
-//     key: "829635121fbade2893b65c9b39f5b3af",
-//     version: "2.0",
-//   })
-//     .then((AMap) => {
-//       const lnglat = new AMap.LngLat(longitude, latitude);
-//       console.log(longitude, latitude);
-//       const geocoder = new AMap.Geocoder();
-//       geocoder.getAddress(lnglat, (status, result) => {
-//         if (status === "complete" && result.regeocode) {
-//           return result.regeocode.formattedAddress;
-//           console.log(result.regeocode.formattedAddress);
-//         }
-//         return "地址获取失败";
-//       });
-//     })
-//     .catch((e) => console.error(e));
-// }
 </script>
 
 <style lang="scss" scoped>
@@ -462,7 +411,7 @@ const getPosition = () => {
   }
 }
 .good-status {
-  color: rgb(0, 128, 0, 0.7);
+  color:#43cf43;
   width: 70px;
   display: flex;
   justify-content: center;
@@ -483,4 +432,21 @@ const getPosition = () => {
   background-color: rgba(219, 180, 180, 0.4);
 }
 
+.tasks {
+  margin-top: 40px;
+  margin-left: 20px;
+}
+.near {
+  margin-top: 40px;
+  margin-left: 20px;
+}
+#map {
+  width: 460px;
+  height: 450px;
+  margin-top: 20px;
+  margin-left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>

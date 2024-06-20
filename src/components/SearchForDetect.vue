@@ -1,10 +1,42 @@
 <template>
-  <div class="btn">
-    <v-btn @click="showTotal" variant="outlined">查看整体情况</v-btn>
-    <v-btn @click="showReal" variant="outlined">查看实时情况</v-btn>
-  </div>
-  <div v-show="!showOverall" id="map3DContainer"></div>
   <div v-show="showOverall" id="container"></div>
+    <div class="contain">
+    <!-- 查看任务清单 -->
+    <div class="tasks">
+      <v-btn variant="outlined" @click="getTasks"> 点击查看详细井盖信息 </v-btn>
+      <!-- <v-data-table :missions="missions"></v-data-table> -->
+      <div class="form">
+        <div class="detail">
+          <!-- <el-button @click="resetDateFilter">Reset Date Filter</el-button>
+      <el-button @click="clearFilter">Reset All Filters</el-button> -->
+          <el-table ref="tableRef" :data="missions">
+            <el-table-column prop="id" label="井盖序号" width="60" />
+            <!-- <el-table-column prop="latitude" label="纬度" /> -->
+            <!-- <el-table-column prop="longitude" label="经度" /> -->
+            <el-table-column prop="address" label="具体地址" />
+            <!-- <el-table-column prop="form" label="类型" /> -->
+            <!-- <el-table-column prop="status" label="井盖状态" /> -->
+            <el-table-column prop="distance" label="去往目的地">
+              <template #default="scope">
+                <v-col cols="auto">
+                  <v-btn
+                    @click="goToDes(scope.row.latitude, scope.row.longitude)"
+                    density="default"
+                    icon="mdi-open-in-new"
+                  ></v-btn>
+                </v-col>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 地图 -->
+    <div v-show="mapShow" class="route">
+      <div id="map"></div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -72,10 +104,9 @@ onMounted(() => {
     throw new Error('Network response was not ok.');
   })
  .then(data => {
-   console.log(JSON.stringify(data.data) + "111");
-    JSON.parse
+    console.log(data);
     if (data.code === 1 && data.data.length > 0) {
-      const { latitude, longitude } = data.data[8];
+      const { latitude, longitude } = data.data[3];
       console.log(latitude, longitude);
 
       if (showOverall.value) {
@@ -86,14 +117,15 @@ onMounted(() => {
        .then((AMap) => {
           const map = new AMap.Map("container", {
             center: [longitude, latitude],
-            zoom: 16,
+            zoom: 14,
           });
+
           data.data.forEach((item) => {
             const markerDiv = document.createElement('div');
             markerDiv.style.width = '22px';
             markerDiv.style.height = '22px';
             markerDiv.style.borderRadius = '50%';
-            markerDiv.style.backgroundColor = item.status === '破损'? '#43cf43' :'red';
+            markerDiv.style.backgroundColor = item.status === '完好'? '#43cf43b3' :'red';
             markerDiv.style.display = 'flex';
             markerDiv.style.justifyContent = 'center';
             markerDiv.style.alignItems = 'center';
@@ -121,8 +153,9 @@ onMounted(() => {
 
 <style scoped lang="scss">
 #container {
-  width: 1150px;
-  height: 600px;
+  width: 600px;
+  height: 400px;
+  margin-bottom: 20px;
 }
 #map3DContainer{
   position: relative;

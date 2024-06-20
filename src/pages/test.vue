@@ -45,10 +45,13 @@
       v-model="tab"
       bg-color="primary"
     >
-      <v-tab class="subtab" value="one">用户</v-tab>
-      <v-tab class="subtab" value="two">上传图片</v-tab>
-      <v-tab class="subtab" value="three">历史查询</v-tab>
-      <v-tab class="subtab" value="four">任务日历</v-tab>
+      <v-tab v-show="worker" class="subtab" value="fifth">查看附近</v-tab>
+      <v-tab v-show="detector" class="subtab" value="seven">查看附近</v-tab>
+      <v-tab v-show="worker" class="subtab" value="six">任务清单</v-tab>
+      <v-tab v-show="worker" class="subtab" value="one">待办事项</v-tab>
+      <v-tab v-show="detector" class="subtab" value="two">上传图片</v-tab>
+      <v-tab v-show="detector" class="subtab" value="three">历史查询</v-tab>
+      <v-tab v-show="worker" class="subtab" value="four">任务日历</v-tab>
     </v-tabs>
 
     <v-card-text>
@@ -59,13 +62,31 @@
             </div>
         </v-window-item>
 
-        <v-window-item value="two">
+        <v-window-item value="fifth">
+            <div class="contain">
+                <SearchNear />
+            </div>
+        </v-window-item>
+
+        <v-window-item value="six">
+            <div class="contain">
+                <task-lists />
+            </div>
+        </v-window-item>
+
+        <v-window-item  v-show="detector" value="two">
             <div class="file">
                 <UpLoadFiles />
             </div>
         </v-window-item>
 
-        <v-window-item value="three">
+        <v-window-item  v-show="detector" value="seven">
+            <div class="file">
+                <search-for-detect />
+            </div>
+        </v-window-item>
+
+        <v-window-item  v-show="detector" value="three">
           <DataQuery />
         </v-window-item>
         <v-window-item value="four">
@@ -89,6 +110,20 @@ const screenWidth = ref(window.innerWidth);
 
 const router = useRouter();
 const tab = ref(null)
+
+const status = localStorage.getItem('status');
+const detector = ref(true);
+const worker = ref(true);
+console.log(status);
+onMounted(() => {
+  if (status === 'user') {
+    detector.value = false;
+    worker.value = true;
+  } else if (status === 'detect') {
+    detector.value = true;
+    worker.value = false;
+  }
+})
 
 // 对话框
 const dialog = ref(false)
