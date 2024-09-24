@@ -45,7 +45,7 @@
           <h1
             style="margin: 0; color: white; display: flex; text-align: center"
           >
-            北京2024年1月-至今井盖统计
+            北京2024年1月-至今建筑物裂缝统计
           </h1>
         </div>
       </div>
@@ -102,7 +102,7 @@
 
           <h1 style="text-align: center; color: rgb(226, 214, 118)">2173</h1>
 
-          <div class="GraduatePeoPle" style="border: 0px">井盖总数目</div>
+          <div class="GraduatePeoPle" style="border: 0px">建筑物裂缝总数目</div>
         </div>
         <div class="count" id="employed">
           <!-- 就业人数 -->
@@ -148,7 +148,7 @@ onMounted(() => {
   // 绘制图表
   let option = {
     title: {
-      text: "井盖",
+      text: "建筑物裂缝",
       textStyle: {
         color: "white",
         fontSize: 16, // 设置标题文本字号
@@ -306,7 +306,7 @@ onMounted(() => {
   // 绘制图表
   let option = {
     title: {
-      text: "井盖隐患分布",
+      text: "建筑物裂缝隐患分布",
       left: "center",
       textStyle: {
         color: "white",
@@ -565,7 +565,7 @@ onMounted(() => {
   let option = {
     backgroundColor: "#0f375f",
     title: {
-      text: "井盖维修花费",
+      text: "建筑物裂缝维修花费",
       left: "center",
       textStyle: {
         color: "white",
@@ -661,7 +661,7 @@ onMounted(() => {
 onMounted(() => {
   let option = {
     title: {
-      text: "主要井盖地区分布",
+      text: "主要建筑物裂缝地区分布",
       left: "center",
       textStyle: {
         color: "white",
@@ -1174,7 +1174,7 @@ onMounted(() => {
       }
       const marker = new AMap.Marker({
         position: [116.333926, 39.997245],
-        title: `井盖`,
+        title: `建筑物裂缝`,
       });
       marker.setMap(map);
       map.add(marker);
@@ -1184,7 +1184,6 @@ onMounted(() => {
     });
 });
 </script>
-
 
 <style lang="scss" scoped>
 .body {

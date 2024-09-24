@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-toolbar color="primary">
-      <v-toolbar-title>井盖检测</v-toolbar-title>
+      <v-toolbar-title>建筑物裂缝检测</v-toolbar-title>
       <!-- 对话框 -->
       <div class="text-center pa-4">
         <v-dialog v-model="dialog" max-width="400" persistent>
@@ -55,39 +55,37 @@
         <v-divider></v-divider>
         <div class="d-flex flex-row">
           <v-tabs v-model="tab" color="primary" direction="vertical">
-            <!-- <v-tab value="option-1">
-          <v-icon start>
-            mdi-account
-          </v-icon>
-          用户
-        </v-tab> -->
-            <!-- <v-tab value="option-2">
-          <v-icon start>
-            <svg-icon type="mdi" :path="path"></svg-icon>
-            mdi-lock
-          </v-icon>
-          上传图片
-        </v-tab> -->
-            <!-- <v-tab value="option-3">
-          <v-icon start>
-            <svg-icon type="mdi" :path="path1"></svg-icon>
-            mdi-access-point
-          </v-icon>
-          历史记录
-        </v-tab> -->
-            <!-- <v-tab value="option-4">
-          <v-icon start>
-            mdi-access-point
-            <svg-icon type="mdi" :path="path2"></svg-icon>
-          </v-icon>
-          任务日历
-        </v-tab> -->
+            <v-tab value="option-1">
+              <v-icon start> mdi-account </v-icon>
+              用户
+            </v-tab>
+            <v-tab value="option-2">
+              <v-icon start>
+                <svg-icon type="mdi" :path="path"></svg-icon>
+                mdi-lock
+              </v-icon>
+              上传图片
+            </v-tab>
+            <v-tab value="option-3">
+              <v-icon start>
+                <svg-icon type="mdi" :path="path1"></svg-icon>
+                mdi-access-point
+              </v-icon>
+              历史记录
+            </v-tab>
+            <v-tab value="option-4">
+              <v-icon start>
+                mdi-access-point
+                <svg-icon type="mdi" :path="path2"></svg-icon>
+              </v-icon>
+              任务日历
+            </v-tab>
             <v-tab value="option-5">
               <v-icon start>
                 <!-- mdi-access-point -->
                 <svg-icon type="mdi" :path="path2"></svg-icon>
               </v-icon>
-              查看井盖
+              查看建筑物裂缝
             </v-tab>
 
             <v-tab value="option-6">
@@ -110,9 +108,9 @@
           <v-window-item value="option-2">
             <UpLoadFiles />
             <div style="text-align: center">
-              <!-- <v-col cols="auto">
-              <v-btn color="indigo" size="large">开始检测</v-btn>
-            </v-col> -->
+              <v-col cols="auto">
+                <v-btn color="indigo" size="large">开始检测</v-btn>
+              </v-col>
             </div>
           </v-window-item>
           <v-window-item value="option-3">

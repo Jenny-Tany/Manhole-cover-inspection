@@ -9,12 +9,12 @@
           <!-- <el-button @click="resetDateFilter">Reset Date Filter</el-button>
       <el-button @click="clearFilter">Reset All Filters</el-button> -->
           <el-table ref="tableRef" :data="missions">
-            <el-table-column prop="id" label="井盖序号" width="60" />
+            <el-table-column prop="id" label="建筑物裂缝序号" width="60" />
             <!-- <el-table-column prop="latitude" label="纬度" /> -->
             <!-- <el-table-column prop="longitude" label="经度" /> -->
             <el-table-column prop="address" label="具体地址" />
             <!-- <el-table-column prop="form" label="类型" /> -->
-            <!-- <el-table-column prop="status" label="井盖状态" /> -->
+            <!-- <el-table-column prop="status" label="建筑物裂缝状态" /> -->
             <el-table-column prop="distance" label="去往目的地">
               <template #default="scope">
                 <v-col cols="auto">
@@ -275,8 +275,8 @@ function create() {
 // 表格
 const getStatusClass = (status) => {
   return {
-    "good-status": status === "井盖完好", // 假定“完好”状态对应绿色样式
-    "damaged-status": status !== "井盖完好", // 非“完好”状态对应红色样式
+    "good-status": status === "建筑物裂缝完好", // 假定“完好”状态对应绿色样式
+    "damaged-status": status !== "建筑物裂缝完好", // 非“完好”状态对应红色样式
   };
 };
 // 用于适应表格数据结构的计算属性
@@ -372,7 +372,7 @@ const getPosition = () => {
     height: 20px !important;
   }
 
-  // 附近井盖和任务清单的额外样式
+  // 附近建筑物裂缝和任务清单的额外样式
   .near {
     width: 100% !important;
     margin-left: 0 !important;
@@ -411,7 +411,7 @@ const getPosition = () => {
   }
 }
 .good-status {
-  color:#43cf43;
+  color: #43cf43;
   width: 70px;
   display: flex;
   justify-content: center;

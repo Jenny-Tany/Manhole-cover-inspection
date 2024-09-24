@@ -19,7 +19,7 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: index,
-      // meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
     },
     {
       path: "/login",
@@ -30,7 +30,7 @@ const router = createRouter({
       path: "/map",
       name: "map",
       component: Map,
-      // meta: { requiresAuth: true } // 添加一个meta字段表示需要登录才能访问
+      meta: { requiresAuth: true }, // 添加一个meta字段表示需要登录才能访问
     },
     {
       path: "/map2",

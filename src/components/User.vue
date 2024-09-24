@@ -174,11 +174,11 @@ const getTasks = () => {
 const tasks = reactive([
   {
     done: false,
-    text: "上午更换井盖",
+    text: "上午更换建筑物裂缝",
   },
   {
     done: false,
-    text: "下午修复井盖",
+    text: "下午修复建筑物裂缝",
   },
 ]);
 
@@ -305,8 +305,8 @@ function create() {
 // 表格
 const getStatusClass = (status) => {
   return {
-    "good-status": status === "井盖完好", // 假定“完好”状态对应绿色样式
-    "damaged-status": status !== "井盖完好", // 非“完好”状态对应红色样式
+    "good-status": status === "建筑物裂缝完好", // 假定“完好”状态对应绿色样式
+    "damaged-status": status !== "建筑物裂缝完好", // 非“完好”状态对应红色样式
   };
 };
 // 用于适应表格数据结构的计算属性
@@ -423,7 +423,7 @@ const getPosition = () => {
     height: 20px !important;
   }
 
-  // 附近井盖和任务清单的额外样式
+  // 附近建筑物裂缝和任务清单的额外样式
   .near {
     width: 100% !important;
     margin-left: 0 !important;
@@ -482,5 +482,4 @@ const getPosition = () => {
   border-radius: 4px;
   background-color: rgba(219, 180, 180, 0.4);
 }
-
 </style>

@@ -1,14 +1,16 @@
 <template>
   <div class="contain">
-    <!-- 附近井盖 -->
+    <!-- 附近建筑物裂缝 -->
     <div class="near">
-      <v-btn variant="outlined" @click="getPosition"> 点击查看附近井盖 </v-btn>
+      <v-btn variant="outlined" @click="getPosition">
+        点击查看附近建筑物裂缝
+      </v-btn>
       <!-- <p>经度: {{ longitude }}</p>
       <p>纬度: {{ latitude }}</p> -->
       <div class="form">
         <div class="detail">
           <el-table ref="tableRef" :data="adaptedMissionData">
-            <el-table-column prop="id" label="井盖序号" width="60" />
+            <el-table-column prop="id" label="建筑物裂缝序号" width="60" />
 
             <el-table-column
               prop="address"
@@ -16,7 +18,7 @@
               width="60"
               :formatter="formatter"
             />
-            <el-table-column prop="status" label="井盖状态" width="60">
+            <el-table-column prop="status" label="建筑物裂缝状态" width="60">
               <template #default="scope">
                 <div
                   :class="getStatusClass(scope.row.status)"
@@ -26,7 +28,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="distance" label="距离(m)" width="60"/>
+            <el-table-column prop="distance" label="距离(m)" width="60" />
             <el-table-column prop="accept" label="是否接受此任务？" width="100">
               <template #default="scope">
                 <div class="text-center pa-4">
@@ -378,7 +380,7 @@ const getPosition = () => {
     height: 20px !important;
   }
 
-  // 附近井盖和任务清单的额外样式
+  // 附近建筑物裂缝和任务清单的额外样式
   .near {
     width: 100% !important;
     margin-left: 0 !important;
