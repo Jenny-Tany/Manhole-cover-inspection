@@ -1,11 +1,11 @@
 <template>
-  <HelloWorld />
+  <HomeIndex />
   <!-- <LoginView /> -->
-  <router-view></router-view>
+  <!-- <router-view></router-view> -->
 </template>
 
 <script setup>
-import HelloWorld from "@/components/HelloWorld.vue";
+import HomeIndex from "@/components/HomeIndex.vue";
 import LoginView from "@/components/LoginView.vue";
 
 //

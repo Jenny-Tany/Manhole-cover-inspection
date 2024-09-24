@@ -43,9 +43,7 @@ const showReal = () => {
       marker.setMap(map);
       map.add(marker);
     })
-    .catch((e) => {
-      console.error(e);
-    });
+    .catch((e) => {});
 };
 onMounted(() => {
   if (!showOverall.value) {
@@ -64,19 +62,19 @@ onMounted(() => {
     },
   })
     .then((response) => {
-      console.log(response);
       if (response.status === 200) {
-        console.log(response.data);
         return response.json();
       }
       throw new Error("Network response was not ok.");
     })
     .then((data) => {
-      console.log(JSON.stringify(data.data) + "111");
+      console.log(
+        "In CheckLoc.vue JSON.stringify(data.data)::: ",
+        JSON.stringify(data.data)
+      );
       JSON.parse;
       if (data.code === 1 && data.data.length > 0) {
         const { latitude, longitude } = data.data[8];
-        console.log(latitude, longitude);
 
         if (showOverall.value) {
           AMapLoader.load({
@@ -109,13 +107,10 @@ onMounted(() => {
                 map.add(marker);
               });
             })
-            .catch((e) => {
-              console.error(e);
-            });
+            .catch((e) => {});
         }
       }
-    })
-    .catch((error) => console.error("获取数据出错:", error));
+    });
 });
 </script>
 

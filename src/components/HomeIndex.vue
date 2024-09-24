@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-toolbar color="primary">
+    <v-toolbar :elevation="8" color="primary">
       <v-toolbar-title>建筑物裂缝检测</v-toolbar-title>
       <!-- 对话框 -->
       <div class="text-center pa-4">
@@ -88,7 +88,7 @@
               查看建筑物裂缝
             </v-tab>
 
-            <v-tab value="option-6">
+            <v-tab value="option-6" @click="emitToMap">
               <v-icon start>
                 <svg-icon type="mdi" :path="path1"></svg-icon>
                 mdi-access-point
@@ -132,19 +132,24 @@
 </template>
 
 <script setup>
-import test from "@/pages/test.vue";
+import phoneView from "@/pages/phoneView.vue";
 import DataQuery from "@/components/DataQuery.vue";
 import User from "@/components/User.vue";
 // import UpLoadFiles from '@/components/UpLoadFiles.vue'
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
+import eventBus from "@/utils/eventBus";
+
+const emitToMap = () => {
+  eventBus.emit("map", "changeToMap");
+};
 const screenWidth = ref(window.innerWidth);
 onMounted(() => {
   window.addEventListener("resize", () => {
     screenWidth.value = window.innerWidth;
     if (screenWidth.value < 600) {
-      router.push("/test"); // 在小于600时跳转到另一个页面
+      router.push("/phone"); // 在小于600时跳转到另一个页面
     }
   });
 });

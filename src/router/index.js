@@ -7,11 +7,11 @@
 // Composables
 import { createRouter, createWebHistory } from "vue-router";
 import index from "@/pages/index.vue";
-import HelloWorld from "@/components/HelloWorld.vue";
+import HomeIndex from "@/components/HomeIndex.vue";
 import LoginView from "@/components/LoginView.vue";
 import Map from "@/components/Map.vue";
 import SpecificMap from "@/components/SpecificMap.vue";
-import test from "@/pages/test.vue";
+import phoneView from "@/pages/phoneView.vue";
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes: [
@@ -38,9 +38,9 @@ const router = createRouter({
       component: SpecificMap,
     },
     {
-      path: "/test",
-      name: "test",
-      component: test,
+      path: "/phone",
+      name: "phoneView",
+      component: phoneView,
     },
   ],
 });
