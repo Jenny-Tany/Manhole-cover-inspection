@@ -69,88 +69,28 @@
 import { ref, computed, reactive } from "vue";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import { ElMessage, ElMessageBox } from "element-plus";
-
-const token = localStorage.getItem("token"); // 从 localStorage 中获取 token
-
-// 接受任务
-const dialog = ref(false);
-const acceptTask = (id) => {};
+import {
+  acceptTask,
+  handleFinish,
+  getTasks,
+  dialog,
+  missions,
+} from "@/apis/task";
+const token = localStorage.getItem("token");
+const mapShow = ref(false);
 
 const handleConfirm = (id) => {
-  dialog.value = false;
-  // 给后端 /api/receive/{id} 发送请求，id 为传递的任务 id
-  fetch(`/api/receive/${id}`, {
-    headers: {
-      token: token,
-    },
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error("Network response was not ok.");
-    })
-    .then((data) => {
-      console.log(data); // 处理后端返回的数据
-    })
-    .catch((error) => {
-      console.error(
-        "There has been a problem with your fetch operation:",
-        error
-      );
-    });
+  acceptTask(id);
 };
 
-// 完成任务
-const handleFinish = (id) => {
-  dialog.value = false;
-  fetch(`/api/complete/${id}`, {
-    headers: {
-      token: token,
-    },
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error("Network response was not ok.");
-    })
-    .then((data) => {
-      console.log(data); // 处理后端返回的数据
-      ElMessage({
-        message: "完成任务成功",
-        type: "success",
-      });
-    });
+const finishTask = (id) => {
+  handleFinish(id);
 };
 
-// check missions
-const missions = ref([]);
-const mapShow = ref(false);
 // 获取任务列表
-const getTasks = () => {
-  fetch("api/mission", {
-    headers: {
-      token: token,
-    },
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error("Network response was not ok.");
-    })
-    .then((data) => {
-      missions.value = [];
-      data.data.forEach((item) => {
-        missions.value.push(item);
-      });
-    })
-    .catch((error) => {
-      console.error();
-    });
-  console.log(missions);
-};
+onMounted(() => {
+  getTasks();
+});
 
 const longitude = ref(null);
 const latitude = ref(null);

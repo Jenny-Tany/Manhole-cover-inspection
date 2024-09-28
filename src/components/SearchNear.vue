@@ -326,21 +326,7 @@ const getPosition = () => {
       throw new Error("Network response was not ok.");
     })
     .then((data) => {
-      missionData.value = [];
-      data.data.forEach((item) => {
-        missionData.value.push({
-          id: item.id,
-          latitude: item.latitude,
-          longitude: item.longitude,
-          status: item.status,
-          distance: item.distance,
-          address: item.address,
-        });
-        // item.status = '进行中';
-        // missionData.value = data.data;
-        // console.log(data.data);
-        console.log(missionData.value);
-      });
+      missionData.value = data.data;
     })
     .catch((error) => console.error("获取数据出错:", error));
 };

@@ -10,6 +10,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import AMapLoader from "@amap/amap-jsapi-loader";
+import { getLocationData } from "@/apis/location";
+import { ElMessage } from "element-plus";
 
 const containerRef = ref(null);
 const showOverall = ref(true);
@@ -45,7 +47,7 @@ const showReal = () => {
     })
     .catch((e) => {});
 };
-onMounted(() => {
+onMounted(async () => {
   if (!showOverall.value) {
     loadAndInit3DMap();
   }
@@ -53,64 +55,52 @@ onMounted(() => {
     securityJsCode: "f715472cbaeee315a3ab0db513cebefa",
   };
 
-  // 发送 GET 请求获取后端数据
-  fetch("/api/get_location", {
-    method: "GET",
-    headers: {
-      // 'Content-Type': 'application/json',
-      token: token,
-    },
-  })
-    .then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      }
-      throw new Error("Network response was not ok.");
-    })
-    .then((data) => {
-      console.log(
-        "In CheckLoc.vue JSON.stringify(data.data)::: ",
-        JSON.stringify(data.data)
-      );
-      JSON.parse;
-      if (data.code === 1 && data.data.length > 0) {
-        const { latitude, longitude } = data.data[8];
+  try {
+    const data = await getLocationData(token);
+    console.log("In CheckLoc.vue data::: ", data);
 
-        if (showOverall.value) {
-          AMapLoader.load({
-            key: "829635121fbade2893b65c9b39f5b3af",
-            version: "2.0",
+    if (data.code === 1 && data.data.length > 0) {
+      const { latitude, longitude } = data.data[8];
+
+      if (showOverall.value) {
+        AMapLoader.load({
+          key: "829635121fbade2893b65c9b39f5b3af",
+          version: "2.0",
+        })
+          .then((AMap) => {
+            const map = new AMap.Map("container", {
+              center: [longitude, latitude],
+              zoom: 16,
+            });
+            data.data.forEach((item) => {
+              const markerDiv = document.createElement("div");
+              markerDiv.style.width = "22px";
+              markerDiv.style.height = "22px";
+              markerDiv.style.borderRadius = "50%";
+              markerDiv.style.backgroundColor =
+                item.status === "破损" ? "#43cf43" : "red";
+              markerDiv.style.display = "flex";
+              markerDiv.style.justifyContent = "center";
+              markerDiv.style.alignItems = "center";
+              markerDiv.textContent = "#";
+              const { latitude, longitude } = item;
+              const marker = new AMap.Marker({
+                position: [longitude, latitude],
+                content: markerDiv,
+                title: `检修方式：${item.form}\n建筑物裂缝情况：${item.status}`,
+              });
+              marker.setMap(map);
+              map.add(marker);
+            });
           })
-            .then((AMap) => {
-              const map = new AMap.Map("container", {
-                center: [longitude, latitude],
-                zoom: 16,
-              });
-              data.data.forEach((item) => {
-                const markerDiv = document.createElement("div");
-                markerDiv.style.width = "22px";
-                markerDiv.style.height = "22px";
-                markerDiv.style.borderRadius = "50%";
-                markerDiv.style.backgroundColor =
-                  item.status === "破损" ? "#43cf43" : "red";
-                markerDiv.style.display = "flex";
-                markerDiv.style.justifyContent = "center";
-                markerDiv.style.alignItems = "center";
-                markerDiv.textContent = "#";
-                const { latitude, longitude } = item;
-                const marker = new AMap.Marker({
-                  position: [longitude, latitude],
-                  content: markerDiv,
-                  title: `检修方式：${item.form}\n建筑物裂缝情况：${item.status}`,
-                });
-                marker.setMap(map);
-                map.add(marker);
-              });
-            })
-            .catch((e) => {});
-        }
+          .catch((e) => {
+            ElMessage.error("地图加载失败");
+          });
       }
-    });
+    }
+  } catch (error) {
+    ElMessage.error("获取位置数据失败");
+  }
 });
 </script>
 

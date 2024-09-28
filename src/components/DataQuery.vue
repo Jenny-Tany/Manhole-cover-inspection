@@ -45,10 +45,13 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
-
+import { useUserStore } from "@/store/user";
+import { fetchPhoto } from "@/apis/photo";
+import { ElMessage } from "element-plus";
+import { crackCategories } from "@/data/buildingCracks";
+const userStore = useUserStore();
 const page = ref(1);
 const photos = ref([]);
-
 onMounted(() => {
   fetchData(page.value);
 });
@@ -56,32 +59,50 @@ onMounted(() => {
 watch(page, (newPage) => {
   fetchData(newPage);
 });
+// production环境下，使用下面的代码
+// function fetchData(pageNum) {
+//   const pageSize = 6;
+//   const { userName } = userStore.getUserInfo();
 
+//   fetchPhoto(pageNum, pageSize, userName)
+//     .then((data) => {
+//       console.log("In DataQuery.vue data::: ", data);
+//       photos.value = data.data.rows;
+//     })
+//     .catch((error) => {
+//       ElMessage.error(`获取数据失败：${error}`);
+//     });
+// }
+// development环境下，使用下面的代码
 function fetchData(pageNum) {
-  const pageSize = 6; // 每页的记录数
-  const token = localStorage.getItem("token"); // 从 localStorage 中获取 token
+  const pageSize = 6;
 
-  fetch(`/api/photos?page_num=${pageNum}&pageSize=${pageSize}`, {
-    headers: {
-      token: token,
-    },
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error("Network response was not ok.");
-    })
-    .then((data) => {
-      console.log(data); // 处理后端返回的数据
-      photos.value = data.data.rows;
-    })
-    .catch((error) => {
-      console.error(
-        "There has been a problem with your fetch operation:",
-        error
-      );
-    });
+  // 定义中国地理位置数组
+  const locations = [
+    "湖南省衡阳市来阳市小水镇金柴岭",
+    "北京市朝阳区望京街道",
+    "上海市浦东新区陆家嘴",
+    "广东省广州市天河区",
+    "四川省成都市武侯区",
+    "浙江省杭州市西湖区",
+  ];
+  // 从 crackCategories 中获取损坏类型数组
+  const crackCategoriesArray = Object.values(crackCategories);
+
+  // 模拟数据
+  const mockPhotos = Array.from({ length: 6 }, (_, index) => ({
+    id: index + 1,
+    resultUrl: `/testimg${index + 1}.jpg`,
+    uploadTime: `2024-09-${index + 1}`, // 模拟上传时间
+    boxInfo:
+      crackCategoriesArray[
+        Math.floor(Math.random() * crackCategoriesArray.length)
+      ], // 随机选择损坏类型
+    location: locations[Math.floor(Math.random() * locations.length)], // 随机选择位置
+  }));
+
+  // 更新 photos 数据
+  photos.value = mockPhotos;
 }
 </script>
 

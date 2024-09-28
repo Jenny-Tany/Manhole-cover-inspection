@@ -5,19 +5,23 @@
  */
 
 // Plugins
-import { registerPlugins } from '@/plugins'
+import { registerPlugins } from "@/plugins";
 
 // Components
-import App from './App.vue'
+import App from "./App.vue";
 
 // Composables
-import { createApp } from 'vue'
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
-import './assets/main.css'
+import { createApp } from "vue";
+import ElementPlus from "element-plus";
+import "element-plus/dist/index.css";
+import "./assets/main.css";
 
-const app = createApp(App)
+// Pinia
+import { createPinia } from "pinia";
 
-registerPlugins(app)
-app.use(ElementPlus)
-app.mount('#app')
+const app = createApp(App);
+
+registerPlugins(app);
+app.use(ElementPlus);
+app.use(createPinia()); // 使用 Pinia
+app.mount("#app");

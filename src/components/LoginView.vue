@@ -124,7 +124,10 @@
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
-
+import { useUserStore } from "@/store/user";
+import { loginUser } from "@/apis/user";
+import request from "@/apis/request";
+const userStore = useUserStore();
 const radio1 = ref("1");
 onMounted(() => {
   signupUsername.value = "";
@@ -173,7 +176,6 @@ const signupPassword = ref("");
 // 登录所需的用户名和密码
 const loginUsername = ref("");
 const loginPassword = ref("");
-
 // 注册
 const signup = async () => {
   console.log("Signing up...");
@@ -181,17 +183,15 @@ const signup = async () => {
   const ePassword = signupPassword.value;
 
   try {
-    const response = await fetch("/api/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userName: eUsername, password: ePassword }),
+    const response = await request.post("/signup", {
+      userName: eUsername,
+      password: ePassword,
     });
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
+    const data = response.data;
+    console.log("In LoginView.vue data::: ", data);
+
+    if (data) {
       if (data.msg === "success") {
         console.log("注册成功");
         // 弹出消息框
@@ -199,9 +199,8 @@ const signup = async () => {
           message: "恭喜你，注册成功！",
           type: "success",
         });
-        // 可以根据后端返回的数据进行相应的处理
       } else if (data.msg === "用户已存在") {
-        console.log("注册失败：用户名已存在或其他错误");
+        console.log("注册失败：用户名已存在");
         ElMessage({
           message: "注册失败，该用户名已存在",
           type: "warning",
@@ -212,58 +211,34 @@ const signup = async () => {
     }
   } catch (error) {
     console.error("注册请求出错：", error);
+    ElMessage.error("注册请求出错");
   }
 
   // 清空输入框
   signupUsername.value = "";
   signupPassword.value = "";
 };
-
 // 登录
 const login = async () => {
   console.log("Logging in...");
-  // 获取用户输入的用户名和密码
   const eUsername = loginUsername.value;
   const ePassword = loginPassword.value;
-  // if (eUsername === 'manager' && ePassword == '123456')
-  //   router.push('/map');
-  // else if (eUsername == 'user' && ePassword === '1234')
-  //   router.push('/');
-  try {
-    const response = await fetch("/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userName: eUsername, password: ePassword }),
-    });
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data); // 根据后端返回的数据进行处理
-      // 存储token
-      const token = data.data.token;
-      const status = data.data.status;
-      console.log(data.msg);
-      console.log(token);
-      localStorage.setItem("token", token);
-      localStorage.setItem("status", status);
-      ElMessage({
-        message: "登录成功！",
-        type: "success",
-      });
-      if (status === "user" || status === "detect") router.push("/test");
-      else {
-        router.push("/map");
-      }
-    } else if (data.msg === "该用户未注册") {
-      console.error("登录请求失败");
-      ElMessage.error("该用户未注册");
+  const result = await loginUser(eUsername, ePassword);
+  console.log("In LoginView.vue result::: ", result);
+
+  if (result.status === "error") {
+    ElMessage.error(result.message);
+  } else {
+    userStore.setUser(eUsername, result.token, result.status);
+    console.log(userStore.getUserInfo());
+
+    // 根据用户状态进行页面跳转
+    if (result.status === "user" || result.status === "detect") {
+      router.push("/test");
+    } else {
+      router.push("/map");
     }
-  } catch (error) {
-    console.error("登录请求出错：", error);
-    ElMessage.error("登录请求出错：");
-    console.log(111);
   }
 
   // 清空输入框
