@@ -175,13 +175,12 @@ button:hover {
 .title {
   padding: 1px;
   font-weight: 500;
-  font-size: 25px;
+  font-size: 20px;
   color: #285193;
   padding: 8px 0;
   margin-top: 3px;
 
   span {
-    background-color: #e5e8f2;
     padding: 10px;
     border-radius: 8px;
   }

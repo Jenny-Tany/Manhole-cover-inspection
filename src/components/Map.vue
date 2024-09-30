@@ -91,7 +91,7 @@
           <h1
             style="margin: 0; color: white; display: flex; text-align: center"
           >
-            北京2024年1月-至今建筑物裂缝统计
+            桂林2024年1月-至今建筑物裂缝统计
           </h1>
         </div>
       </div>
@@ -211,11 +211,12 @@ let fieldOption = {
     },
   },
   xAxis: {
-    data: ["broke", "cicle", "circle", "good", "uncovered"],
+    data: ["横向裂缝", "纵向裂缝", "斜向裂缝", "收缩裂缝", "沉降裂缝"],
     axisLabel: {
       textStyle: {
         color: "white", // 修改x轴刻度文字颜色为白色
       },
+      interval: 0,
     },
   },
   yAxis: {
@@ -729,6 +730,10 @@ let paymentOption = {
 
 //此处是中心地图的初始化
 const AmapInit = () => {
+  const positionObj = {
+    Latitude: 25.274215, // 纬度
+    Longitude: 110.299122, // 经度
+  };
   window._AMapSecurityConfig = {
     securityJsCode: "f715472cbaeee315a3ab0db513cebefa",
   };
@@ -739,29 +744,38 @@ const AmapInit = () => {
   })
     .then((AMap) => {
       const map = new AMap.Map("map", {
-        center: [116.333926, 39.997245],
+        center: [positionObj.Longitude, positionObj.Latitude],
         zoom: 10,
       });
       for (let i = 0; i < 3; i++) {
         const marker = new AMap.Marker({
-          position: [116.333926 + i * 0.11, 39.997245 + i * 0.16],
+          position: [
+            positionObj.Longitude + i * 0.11,
+            positionObj.Latitude + i * 0.16,
+          ],
         });
         marker.setMap(map);
       }
       for (let i = 0; i < 2; i++) {
         const marker = new AMap.Marker({
-          position: [116.333926 + i * 0.11, 39.997245 - i * 0.26],
+          position: [
+            positionObj.Longitude + i * 0.11,
+            positionObj.Latitude - i * 0.26,
+          ],
         });
         marker.setMap(map);
       }
       for (let i = 0; i < 2; i++) {
         const marker = new AMap.Marker({
-          position: [116.333926 - i * 0.41, 39.997245 - i * 0.16],
+          position: [
+            positionObj.Longitude - i * 0.41,
+            positionObj.Latitude - i * 0.16,
+          ],
         });
         marker.setMap(map);
       }
       const marker = new AMap.Marker({
-        position: [116.333926, 39.997245],
+        position: [positionObj.Longitude, positionObj.Latitude],
         title: `建筑物裂缝`,
       });
       marker.setMap(map);
@@ -814,7 +828,7 @@ function initMap() {
 
 onMounted(() => {
   initMap();
-  AmapInit(); // 假设这是另一个初始化函数
+  AmapInit();
 });
 </script>
 
