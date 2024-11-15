@@ -49,7 +49,7 @@ export default {
     events: [],
     colors: ["blue", "indigo", "deep-purple", "cyan", "grey darken-1"],
     titles: [
-      "更换建筑物裂缝",
+      "替换建筑物裂缝",
       "修复建筑物裂缝",
       "补充缺失建筑物裂缝",
       "调整倾斜建筑物裂缝",

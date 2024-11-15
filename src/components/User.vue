@@ -20,7 +20,7 @@
         </template>
       </v-text-field>
 
-      <h2 class="text-h4 text-success ps-4">
+      <h2 class="text-h4 text-success">
         任务总数:&nbsp;
         <v-fade-transition leave-absolute>
           <span :key="`tasks-${tasks.length}`">
@@ -174,7 +174,7 @@ const getTasks = () => {
 const tasks = reactive([
   {
     done: false,
-    text: "上午更换建筑物裂缝",
+    text: "上午检查建筑物裂缝",
   },
   {
     done: false,
