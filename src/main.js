@@ -15,13 +15,11 @@ import { createApp } from "vue";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import "./assets/main.css";
-
-// Pinia
-import { createPinia } from "pinia";
+import pinia from "@/store/index.js"
 
 const app = createApp(App);
 
 registerPlugins(app);
 app.use(ElementPlus);
-app.use(createPinia()); // 使用 Pinia
+app.use(pinia); // 使用 Pinia
 app.mount("#app");

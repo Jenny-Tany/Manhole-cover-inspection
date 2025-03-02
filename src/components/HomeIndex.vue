@@ -88,7 +88,7 @@
               查看建筑物裂缝
             </v-tab>
 
-            <v-tab value="option-6" @click="emitToMap">
+            <v-tab v-if="isManager" value="option-6" @click="emitToMap">
               <v-icon start>
                 <svg-icon type="mdi" :path="path1"></svg-icon>
                 mdi-access-point
@@ -138,12 +138,16 @@ import User from "@/components/User.vue";
 // import UpLoadFiles from '@/components/UpLoadFiles.vue'
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-
+import { useUserStore } from "@/store/user";
 import eventBus from "@/utils/eventBus";
-
+const userStore = useUserStore();
 const emitToMap = () => {
   eventBus.emit("map", "changeToMap");
 };
+const isManager = userStore.status === "maneger";
+// console.log("In HomeIndex.vue userStore::: ", userStore);
+// console.log("In HomeIndex.vue userStore.status::: ", userStore.status);
+// console.log("In HomeIndex.vue isManager::: ", isManager);
 const screenWidth = ref(window.innerWidth);
 onMounted(() => {
   window.addEventListener("resize", () => {

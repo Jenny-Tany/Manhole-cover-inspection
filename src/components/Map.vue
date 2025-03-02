@@ -731,8 +731,8 @@ let paymentOption = {
 //此处是中心地图的初始化
 const AmapInit = () => {
   const positionObj = {
-    Latitude: 25.274215, // 纬度
-    Longitude: 110.299122, // 经度
+    Latitude: 25.274215,
+    Longitude: 110.299122,
   };
   window._AMapSecurityConfig = {
     securityJsCode: "f715472cbaeee315a3ab0db513cebefa",
@@ -747,41 +747,108 @@ const AmapInit = () => {
         center: [positionObj.Longitude, positionObj.Latitude],
         zoom: 10,
       });
+
+      // 创建信息窗体
+      const createInfoWindow = (title, content) => {
+        return new AMap.InfoWindow({
+          isCustom: true,
+          content: `
+            <div style="padding: 10px; background: #fff; border-radius: 4px;">
+              <h4 style="margin: 0 0 5px 0;">${title}</h4>
+              <div>${content}</div>
+            </div>
+          `,
+          offset: new AMap.Pixel(0, -30),
+        });
+      };
+
+      // 添加带点击事件的标记
+      const addMarkerWithInfo = (position, title, content) => {
+        const marker = new AMap.Marker({
+          position: position,
+          title: title,
+        });
+
+        const infoWindow = createInfoWindow(title, content);
+
+        // 绑定点击事件
+        marker.on("click", () => {
+          infoWindow.open(map, marker.getPosition());
+        });
+
+        marker.setMap(map);
+        return marker;
+      };
+
+      // 添加多个标记点
       for (let i = 0; i < 3; i++) {
-        const marker = new AMap.Marker({
-          position: [
-            positionObj.Longitude + i * 0.11,
-            positionObj.Latitude + i * 0.16,
-          ],
-        });
-        marker.setMap(map);
+        addMarkerWithInfo(
+          [positionObj.Longitude + i * 0.11, positionObj.Latitude + i * 0.16],
+          `建筑物裂缝点 ${i + 1}`,
+          `
+            <div>
+              <p>位置：桂林市某某区${i + 1}号</p>
+              <p>损坏类型：严重裂缝</p>
+              <p>检测时间：2024-01-${i + 1}</p>
+              <button onclick="window.location.href='/detail/${
+                i + 1
+              }'" style="padding: 5px 10px;">查看详情</button>
+            </div>
+          `
+        );
       }
+
+      // 添加其他标记点
       for (let i = 0; i < 2; i++) {
-        const marker = new AMap.Marker({
-          position: [
-            positionObj.Longitude + i * 0.11,
-            positionObj.Latitude - i * 0.26,
-          ],
-        });
-        marker.setMap(map);
+        addMarkerWithInfo(
+          [positionObj.Longitude + i * 0.11, positionObj.Latitude - i * 0.26],
+          `建筑物裂缝点 ${i + 4}`,
+          `
+            <div>
+              <p>位置：桂林市某某区${i + 4}号</p>
+              <p>损坏类型：轻微剥离</p>
+              <p>检测时间：2024-01-${i + 4}</p>
+              <button onclick="window.location.href='/detail/${
+                i + 4
+              }'" style="padding: 5px 10px;">查看详情</button>
+            </div>
+          `
+        );
       }
+
       for (let i = 0; i < 2; i++) {
-        const marker = new AMap.Marker({
-          position: [
-            positionObj.Longitude - i * 0.41,
-            positionObj.Latitude - i * 0.16,
-          ],
-        });
-        marker.setMap(map);
+        addMarkerWithInfo(
+          [positionObj.Longitude - i * 0.41, positionObj.Latitude - i * 0.16],
+          `建筑物裂缝点 ${i + 6}`,
+          `
+            <div>
+              <p>位置：桂林市某某区${i + 6}号</p>
+              <p>损坏类型：钢筋暴露</p>
+              <p>检测时间：2024-01-${i + 6}</p>
+              <button onclick="window.location.href='/detail/${
+                i + 6
+              }'" style="padding: 5px 10px;">查看详情</button>
+            </div>
+          `
+        );
       }
-      const marker = new AMap.Marker({
-        position: [positionObj.Longitude, positionObj.Latitude],
-        title: `建筑物裂缝`,
-      });
-      marker.setMap(map);
-      map.add(marker);
+
+      // 中心点标记
+      addMarkerWithInfo(
+        [positionObj.Longitude, positionObj.Latitude],
+        "桂林市中心",
+        `
+          <div>
+            <p>位置：桂林市中心</p>
+            <p>总检测点位：8个</p>
+            <p>更新时间：2024-01-01</p>
+          </div>
+        `
+      );
     })
-    .catch((e) => {});
+    .catch((e) => {
+      console.error("地图加载失败：", e);
+    });
 };
 
 // 初始化图表的函数

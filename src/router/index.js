@@ -7,11 +7,12 @@
 // Composables
 import { createRouter, createWebHistory } from "vue-router";
 import index from "@/pages/index.vue";
-import HomeIndex from "@/components/HomeIndex.vue";
-import LoginView from "@/components/LoginView.vue";
-import Map from "@/components/Map.vue";
-import SpecificMap from "@/components/SpecificMap.vue";
-import phoneView from "@/pages/phoneView.vue";
+// import HomeIndex from "@/components/HomeIndex.vue"; // 移除静态导入
+// import LoginView from "@/components/LoginView.vue"; // 移除静态导入
+// import Map from "@/components/Map.vue"; // 移除静态导入
+// import SpecificMap from "@/components/SpecificMap.vue"; // 移除静态导入
+// import phoneView from "@/pages/phoneView.vue"; // 移除静态导入
+
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes: [
@@ -24,23 +25,33 @@ const router = createRouter({
     {
       path: "/login",
       name: "login",
-      component: LoginView,
+      // component: LoginView, // 替换为动态导入
+      component: () => import("@/components/LoginView.vue"),
+    },
+    {
+      path: "/test",
+      redirect: {
+        name: "home"
+      }
     },
     {
       path: "/map",
       name: "map",
-      component: Map,
+      // component: Map, // 替换为动态导入
+      component: () => import("@/components/Map.vue"),
       meta: { requiresAuth: true }, // 添加一个meta字段表示需要登录才能访问
     },
     {
       path: "/map2",
       name: "map2",
-      component: SpecificMap,
+      // component: SpecificMap, // 替换为动态导入
+      component: () => import("@/components/SpecificMap.vue"),
     },
     {
       path: "/phone",
       name: "phoneView",
-      component: phoneView,
+      // component: phoneView, // 替换为动态导入
+      component: () => import("@/pages/phoneView.vue"),
     },
   ],
 });

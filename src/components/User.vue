@@ -1,7 +1,7 @@
 <template>
   <div class="contain">
     <!-- 自定义任务 -->
-    <v-container style="max-width: 500px; margin-top: 40px">
+    <v-container style="max-width: 500px; margin-top: -80px">
       <v-text-field
         v-model="newTask"
         label="添加待办任务："
